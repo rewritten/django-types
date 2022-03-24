@@ -1,16 +1,30 @@
 from typing import Any, Dict, Iterator, Optional
 
+from django.http.request import HttpRequest
+from django.template.base import Origin, Template as TemplateObject
 from django.template.engine import Engine
 from django.template.exceptions import TemplateDoesNotExist
 
 from .base import BaseEngine
 
-class DjangoTemplates(BaseEngine):
+
+class DjangoTemplates(BaseEngine[Template]):
     engine: Engine = ...
     def __init__(self, params: Dict[str, Any]) -> None: ...
     def get_templatetag_libraries(
         self, custom_libraries: Dict[str, str]
     ) -> Dict[str, str]: ...
+
+class Template:
+    template: TemplateObject
+    backend: DjangoTemplates
+
+    def __init__(self, template: TemplateObject, backend: DjangoTemplates): ...
+
+    @property
+    def origin(self) -> Origin: ...
+
+    def render(self, context: Optional[Dict[str, Any]] = ..., request: Optional[HttpRequest] = ...) -> str: ...
 
 def copy_exception(
     exc: TemplateDoesNotExist, backend: Optional[DjangoTemplates] = ...

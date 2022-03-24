@@ -78,8 +78,7 @@ class Template:
     def __iter__(self) -> None: ...
     def render(
         self,
-        context: Optional[Union[Context, Dict[str, Any]]] = ...,
-        request: Optional[HttpRequest] = ...,
+        context: Optional[Context] = ...,
     ) -> Any: ...
     def compile_nodelist(self) -> NodeList: ...
     def get_exception_info(
